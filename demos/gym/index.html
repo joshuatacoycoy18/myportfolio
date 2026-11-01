@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FitLife Gym — Train Hard. Live Strong.</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:#0a0a0a;color:#f5f5f5;line-height:1.6}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 1.75rem;background:rgba(10,10,10,.85);backdrop-filter:blur(14px);border-bottom:1px solid #1a1a1a;display:flex;justify-content:space-between;align-items:center}
+.nav strong{font-weight:900;letter-spacing:-.5px;font-size:1.2rem;color:#ef4444}
+.nav-menu{display:flex;gap:1.75rem}
+.nav-menu a{color:#a3a3a3;font-size:.88rem;font-weight:500;transition:.2s}
+.nav-menu a:hover{color:#ef4444}
+.nav-cta{background:#ef4444;color:#fff;padding:.55rem 1.2rem;border-radius:8px;font-weight:700;font-size:.82rem;transition:.2s}
+.nav-cta:hover{background:#dc2626;transform:translateY(-2px)}
+.hero{min-height:100vh;display:flex;align-items:center;padding:8rem 1.5rem 4rem;position:relative;overflow:hidden;background:linear-gradient(135deg,#0a0a0a 0%,#1a0808 100%)}
+.hero::before{content:"";position:absolute;top:-30%;right:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(239,68,68,.35),transparent 60%);filter:blur(80px)}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:2}
+.hero h1{font-size:clamp(2.5rem,8vw,5rem);line-height:.95;letter-spacing:-2px;font-weight:900;margin-bottom:1.25rem}
+.hero h1 span{color:#ef4444;display:block}
+.hero p{font-size:1.05rem;color:#a3a3a3;max-width:520px;margin-bottom:2rem}
+.hero-ctas{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn{padding:.9rem 1.75rem;border-radius:8px;font-weight:700;font-size:.92rem;cursor:pointer;border:none;transition:.25s;display:inline-flex;align-items:center;gap:.5rem;font-family:inherit}
+.btn-primary{background:#ef4444;color:#fff}
+.btn-primary:hover{background:#dc2626;transform:translateY(-3px);box-shadow:0 15px 30px rgba(239,68,68,.35)}
+.btn-ghost{background:transparent;color:#f5f5f5;border:1px solid #262626}
+.btn-ghost:hover{border-color:#ef4444;color:#ef4444}
+.hero-stats{display:flex;gap:2rem;margin-top:3rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid #1a1a1a}
+.hero-stat b{display:block;font-size:2rem;font-weight:900;color:#ef4444;line-height:1}
+.hero-stat span{color:#737373;font-size:.8rem;text-transform:uppercase;letter-spacing:1px}
+section{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
+.sec-head{text-align:center;margin-bottom:3rem}
+.sec-tag{color:#ef4444;font-size:.75rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:.5rem}
+.sec-head h2{font-size:clamp(1.8rem,4vw,2.5rem);letter-spacing:-1px;font-weight:800}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.plan{background:#111;border:1px solid #1a1a1a;border-radius:16px;padding:2rem;transition:.3s;position:relative}
+.plan:hover{transform:translateY(-6px);border-color:#ef4444}
+.plan.hot{border-color:#ef4444;background:linear-gradient(180deg,#1a0808,#111)}
+.plan.hot::before{content:"MOST POPULAR";position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:.68rem;font-weight:800;padding:.3rem .85rem;border-radius:99px;letter-spacing:1px}
+.plan h3{font-size:1rem;text-transform:uppercase;letter-spacing:2px;color:#737373;margin-bottom:.5rem}
+.plan .price{font-size:2.5rem;font-weight:900;color:#ef4444;line-height:1;margin-bottom:.25rem}
+.plan .price small{font-size:.85rem;font-weight:400;color:#737373}
+.plan ul{margin:1.5rem 0;color:#d4d4d4;font-size:.9rem}
+.plan li{padding:.4rem 0;display:flex;gap:.5rem;align-items:flex-start}
+.plan li::before{content:"✓";color:#ef4444;font-weight:700;flex-shrink:0}
+.plan a{display:block;text-align:center;padding:.75rem;border-radius:8px;background:#ef4444;color:#fff;font-weight:700;font-size:.88rem;transition:.2s}
+.plan a:hover{background:#dc2626}
+.schedule{background:#0a0a0a}
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;max-width:1000px;margin:0 auto}
+.day{background:#111;border:1px solid #1a1a1a;border-radius:14px;padding:1.5rem;transition:.25s;cursor:pointer}
+.day:hover,.day.active{border-color:#ef4444;background:#1a0d0d}
+.day h4{font-size:1rem;text-transform:uppercase;letter-spacing:1px;color:#ef4444;margin-bottom:1rem}
+.class-item{display:flex;gap:.75rem;align-items:flex-start;padding:.75rem 0;border-bottom:1px solid #1a1a1a;font-size:.82rem}
+.class-item:last-child{border:none}
+.class-item time{color:#ef4444;font-family:monospace;font-weight:700;flex-shrink:0;font-size:.78rem}
+.class-item b{display:block;font-size:.85rem;color:#f5f5f5;margin-bottom:.15rem}
+.class-item span{color:#737373;font-size:.75rem}
+.tools{background:linear-gradient(180deg,#0a0a0a,#1a0505);border-radius:24px;padding:3rem 2rem;max-width:900px;margin:0 auto;border:1px solid #1a1a1a}
+.tools h2{text-align:center;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.5px;margin-bottom:.5rem}
+.tools .sub{text-align:center;color:#737373;margin-bottom:2.5rem;font-size:.9rem}
+.calc-tabs{display:flex;justify-content:center;gap:.5rem;margin-bottom:2rem}
+.calc-tabs button{padding:.55rem 1.25rem;border:1px solid #262626;background:transparent;color:#a3a3a3;border-radius:99px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600;transition:.2s}
+.calc-tabs button.active{background:#ef4444;color:#fff;border-color:#ef4444}
+.calc-pane{display:none}
+.calc-pane.active{display:block}
+.calc-pane .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.calc-pane label{display:block;font-size:.78rem;color:#a3a3a3;text-transform:uppercase;letter-spacing:1px;margin-bottom:.35rem;font-weight:600}
+.calc-pane input,.calc-pane select{width:100%;padding:.85rem 1rem;border-radius:10px;border:1px solid #262626;background:#0a0a0a;color:#f5f5f5;font-family:inherit;font-size:.92rem;outline:none;transition:.2s}
+.calc-pane input:focus,.calc-pane select:focus{border-color:#ef4444}
+.calc-btn{width:100%;padding:.9rem;border-radius:10px;background:#ef4444;color:#fff;border:none;font-weight:700;cursor:pointer;font-family:inherit;font-size:.95rem;margin-top:.5rem}
+.calc-btn:hover{background:#dc2626}
+.calc-result{margin-top:1.5rem;padding:1.5rem;background:#0a0a0a;border:1px solid #262626;border-radius:12px;text-align:center;min-height:100px;display:grid;place-items:center}
+.calc-result .big{font-size:2.5rem;font-weight:900;color:#ef4444;line-height:1}
+.calc-result .label{color:#737373;font-size:.85rem;margin-top:.35rem;text-transform:uppercase;letter-spacing:1px}
+.calc-result .note{color:#a3a3a3;font-size:.8rem;margin-top:.75rem}
+.trainers{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem}
+.trainer{background:#111;border:1px solid #1a1a1a;border-radius:14px;padding:1.75rem;text-align:center;cursor:pointer;transition:.3s}
+.trainer:hover{transform:translateY(-6px);border-color:#ef4444}
+.trainer .ava{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#7c2d12);display:grid;place-items:center;font-size:2.2rem;margin:0 auto 1rem}
+.trainer h4{font-size:1rem;margin-bottom:.25rem}
+.trainer .specialty{color:#ef4444;font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.5rem}
+.trainer p{color:#737373;font-size:.82rem}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);display:none;place-items:center;z-index:200;padding:1.5rem}
+.modal.open{display:grid}
+.modal-box{background:#111;border:1px solid #262626;border-radius:20px;max-width:520px;width:100%;padding:2rem;position:relative;animation:pop .3s ease}
+@keyframes pop{from{transform:scale(.94);opacity:0}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:#737373;font-size:1.5rem;cursor:pointer}
+.modal-box .ava{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#7c2d12);display:grid;place-items:center;font-size:2.5rem;margin:0 auto 1rem}
+.modal-box h3{text-align:center;font-size:1.4rem;margin-bottom:.25rem}
+.modal-box .specialty{text-align:center;color:#ef4444;font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem}
+.modal-box p{color:#a3a3a3;font-size:.9rem;margin-bottom:1rem;text-align:center}
+.modal-box ul{background:#0a0a0a;border-radius:10px;padding:1rem;font-size:.85rem;color:#d4d4d4}
+.modal-box ul li{padding:.35rem 0}
+.modal-box ul li::before{content:"💪 ";margin-right:.25rem}
+footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:2.5rem 1.5rem;text-align:center;color:#737373;font-size:.85rem}
+@media(max-width:800px){.nav-menu{display:none}.calc-pane .row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <strong>FITLIFE</strong>
+  <div class="nav-menu">
+    <a href="#plans">Plans</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#tools">Tools</a>
+    <a href="#trainers">Trainers</a>
+  </div>
+  <a href="#plans" class="nav-cta">Free Trial</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <h1>TRAIN HARD.<span>LIVE STRONG.</span></h1>
+    <p>Personal coaching, group classes, and 24/7 access — all under one roof. Start your transformation today.</p>
+    <div class="hero-ctas">
+      <a href="#plans" class="btn btn-primary">Start free trial →</a>
+      <a href="#tools" class="btn btn-ghost">Try BMI calculator</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><b>2,400+</b><span>Members</span></div>
+      <div class="hero-stat"><b>28</b><span>Weekly classes</span></div>
+      <div class="hero-stat"><b>12</b><span>Expert trainers</span></div>
+      <div class="hero-stat"><b>24/7</b><span>Access</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="plans">
+  <div class="sec-head">
+    <span class="sec-tag">Membership</span>
+    <h2>Pick your plan</h2>
+  </div>
+  <div class="plans">
+    <div class="plan">
+      <h3>Basic</h3>
+      <div class="price">₱999<small>/mo</small></div>
+      <ul>
+        <li>Gym access (6am–10pm)</li>
+        <li>Locker room &amp; showers</li>
+        <li>1 group class per week</li>
+        <li>Mobile app access</li>
+      </ul>
+      <a href="#">Choose Basic</a>
+    </div>
+    <div class="plan hot">
+      <h3>Pro</h3>
+      <div class="price">₱1,899<small>/mo</small></div>
+      <ul>
+        <li>24/7 gym access</li>
+        <li>Unlimited group classes</li>
+        <li>1 personal training session/mo</li>
+        <li>Personalized nutrition plan</li>
+        <li>Body composition scans</li>
+      </ul>
+      <a href="#">Choose Pro</a>
+    </div>
+    <div class="plan">
+      <h3>Elite</h3>
+      <div class="price">₱2,999<small>/mo</small></div>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>4 personal training sessions/mo</li>
+        <li>Sauna &amp; recovery room</li>
+        <li>Priority class booking</li>
+        <li>Guest passes (2/mo)</li>
+      </ul>
+      <a href="#">Choose Elite</a>
+    </div>
+  </div>
+</section>
+
+<section class="schedule" id="schedule">
+  <div class="sec-head">
+    <span class="sec-tag">Weekly Schedule</span>
+    <h2>Classes this week</h2>
+  </div>
+  <div class="sched-grid" id="schedGrid"></div>
+</section>
+
+<section id="tools">
+  <div class="tools">
+    <h2>Free Fitness Tools</h2>
+    <p class="sub">Calculate your BMI and daily calorie needs in seconds.</p>
+    <div class="calc-tabs">
+      <button class="active" data-pane="bmi">BMI Calculator</button>
+      <button data-pane="calorie">Calorie Needs</button>
+    </div>
+
+    <div class="calc-pane active" id="bmiPane">
+      <div class="row">
+        <div><label>Height</label><input type="number" id="bmiH" placeholder="cm" min="100" max="250"></div>
+        <div><label>Weight</label><input type="number" id="bmiW" placeholder="kg" min="30" max="300"></div>
+      </div>
+      <button class="calc-btn" id="bmiBtn">Calculate BMI</button>
+      <div class="calc-result" id="bmiResult"><span style="color:#737373;font-size:.9rem">Enter your details above</span></div>
+    </div>
+
+    <div class="calc-pane" id="caloriePane">
+      <div class="row">
+        <div><label>Age</label><input type="number" id="calAge" placeholder="years" min="15" max="100"></div>
+        <div><label>Gender</label><select id="calGender"><option value="male">Male</option><option value="female">Female</option></select></div>
+      </div>
+      <div class="row">
+        <div><label>Height (cm)</label><input type="number" id="calH" placeholder="cm"></div>
+        <div><label>Weight (kg)</label><input type="number" id="calW" placeholder="kg"></div>
+      </div>
+      <div class="row">
+        <div><label>Activity Level</label><select id="calAct">
+          <option value="1.2">Sedentary</option>
+          <option value="1.375">Lightly active</option>
+          <option value="1.55" selected>Moderately active</option>
+          <option value="1.725">Very active</option>
+          <option value="1.9">Extremely active</option>
+        </select></div>
+        <div><label>Goal</label><select id="calGoal">
+          <option value="-500">Lose weight</option>
+          <option value="0" selected>Maintain</option>
+          <option value="500">Gain muscle</option>
+        </select></div>
+      </div>
+      <button class="calc-btn" id="calBtn">Calculate daily calories</button>
+      <div class="calc-result" id="calResult"><span style="color:#737373;font-size:.9rem">Enter your details above</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="trainers">
+  <div class="sec-head">
+    <span class="sec-tag">Meet the team</span>
+    <h2>Expert trainers</h2>
+  </div>
+  <div class="trainers" id="trainersGrid"></div>
+</section>
+
+<footer>© 2026 FitLife Gym · Demo for portfolio showcase</footer>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">×</button>
+    <div class="ava" id="mAvatar"></div>
+    <h3 id="mName"></h3>
+    <div class="specialty" id="mSpec"></div>
+    <p id="mBio"></p>
+    <ul id="mList"></ul>
+  </div>
+</div>
+
+<script>
+// Schedule data
+const schedule=[
+  {day:"Monday",classes:[{time:"6:00",name:"HIIT Burn",trainer:"Coach Marcus"},{time:"12:00",name:"Power Yoga",trainer:"Coach Elena"},{time:"18:00",name:"Boxing Fundamentals",trainer:"Coach Jay"}]},
+  {day:"Tuesday",classes:[{time:"6:00",name:"Strength Circuit",trainer:"Coach Sarah"},{time:"12:00",name:"Spin Class",trainer:"Coach Marcus"},{time:"18:00",name:"MMA Basics",trainer:"Coach Jay"}]},
+  {day:"Wednesday",classes:[{time:"6:00",name:"HIIT Burn",trainer:"Coach Marcus"},{time:"12:00",name:"Pilates",trainer:"Coach Elena"},{time:"18:00",name:"Olympic Lifting",trainer:"Coach Sarah"}]},
+  {day:"Thursday",classes:[{time:"6:00",name:"Endurance Run",trainer:"Coach Marcus"},{time:"12:00",name:"Mobility Flow",trainer:"Coach Elena"},{time:"18:00",name:"Kickboxing",trainer:"Coach Jay"}]},
+  {day:"Friday",classes:[{time:"6:00",name:"Strength Circuit",trainer:"Coach Sarah"},{time:"12:00",name:"Spin Class",trainer:"Coach Marcus"},{time:"18:00",name:"Open Gym Social",trainer:"All coaches"}]},
+  {day:"Saturday",classes:[{time:"8:00",name:"Bootcamp",trainer:"Coach Jay"},{time:"10:00",name:"Partner WOD",trainer:"Coach Sarah"},{time:"14:00",name:"Recovery Yoga",trainer:"Coach Elena"}]},
+  {day:"Sunday",classes:[{time:"9:00",name:"Open Gym",trainer:"Staff on duty"},{time:"11:00",name:"Beginner Basics",trainer:"Coach Elena"}]}
+];
+
+document.getElementById('schedGrid').innerHTML=schedule.map((d,i)=>`
+  <div class="day ${i===0?'active':''}">
+    <h4>${d.day}</h4>
+    ${d.classes.map(c=>`<div class="class-item"><time>${c.time}</time><div><b>${c.name}</b><span>${c.trainer}</span></div></div>`).join('')}
+  </div>`).join('');
+
+document.querySelectorAll('.day').forEach(d=>d.onclick=()=>{
+  document.querySelectorAll('.day').forEach(x=>x.classList.remove('active'));
+  d.classList.add('active');
+});
+
+// Calc tabs
+document.querySelectorAll('.calc-tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.calc-tabs button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.calc-pane').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.pane+'Pane').classList.add('active');
+});
+
+// BMI
+document.getElementById('bmiBtn').onclick=()=>{
+  const h=+document.getElementById('bmiH').value/100;
+  const w=+document.getElementById('bmiW').value;
+  const out=document.getElementById('bmiResult');
+  if(!h||!w||h<1||h>2.5||w<30||w>300){out.innerHTML='<span style="color:#f87171">Please enter valid values.</span>';return;}
+  const bmi=(w/(h*h)).toFixed(1);
+  let cat,color;
+  if(bmi<18.5){cat="Underweight";color="#fbbf24";}
+  else if(bmi<25){cat="Normal weight";color="#22c55e";}
+  else if(bmi<30){cat="Overweight";color="#f97316";}
+  else{cat="Obese";color="#ef4444";}
+  out.innerHTML=`<div><div class="big">${bmi}</div><div class="label">BMI</div><div class="note" style="color:${color};font-weight:700">${cat}</div></div>`;
+};
+
+// Calorie
+document.getElementById('calBtn').onclick=()=>{
+  const age=+document.getElementById('calAge').value;
+  const gender=document.getElementById('calGender').value;
+  const h=+document.getElementById('calH').value;
+  const w=+document.getElementById('calW').value;
+  const act=+document.getElementById('calAct').value;
+  const goal=+document.getElementById('calGoal').value;
+  const out=document.getElementById('calResult');
+  if(!age||!h||!w){out.innerHTML='<span style="color:#f87171">Please fill all fields.</span>';return;}
+  // Mifflin-St Jeor
+  let bmr;
+  if(gender==='male')bmr=10*w+6.25*h-5*age+5;
+  else bmr=10*w+6.25*h-5*age-161;
+  const tdee=Math.round(bmr*act);
+  const target=tdee+goal;
+  const goalText=goal<0?'Weight loss':goal>0?'Muscle gain':'Maintenance';
+  out.innerHTML=`<div><div class="big">${target}</div><div class="label">kcal / day</div><div class="note">${goalText} · TDEE: ${tdee} kcal</div></div>`;
+};
+
+// Trainers
+const trainers=[
+  {id:'marcus',emoji:'💪',name:"Marcus Reyes",specialty:"HIIT & Conditioning",bio:"10 years of experience training athletes and everyday people.",list:["NASM Certified Personal Trainer","CrossFit Level 2","Former national athlete"]},
+  {id:'elena',emoji:'🧘‍♀️',name:"Elena Cruz",specialty:"Yoga & Mobility",bio:"Helping people move better and feel better through mindful practice.",list:["RYT-500 Yoga Alliance","FRC Mobility Specialist","Prenatal yoga certified"]},
+  {id:'jay',emoji:'🥊',name:"Jay Santos",specialty:"Boxing & MMA",bio:"Pro fighter turned coach. Fundamentals-focused, no shortcuts.",list:["Pro MMA record 12-3","Boxing Level 2 Coach","CPR & First Aid certified"]},
+  {id:'sarah',emoji:'🏋️‍♀️',name:"Sarah Lim",specialty:"Strength & Powerlifting",bio:"Chasing PRs and building strong bodies safely.",list:["NSCA-CSCS certified","IPF National competitor","Precision Nutrition L1"]}
+];
+document.getElementById('trainersGrid').innerHTML=trainers.map(t=>`
+  <div class="trainer" data-id="${t.id}">
+    <div class="ava">${t.emoji}</div>
+    <h4>${t.name}</h4>
+    <div class="specialty">${t.specialty}</div>
+    <p>${t.bio}</p>
+  </div>`).join('');
+
+const modal=document.getElementById('modal');
+document.querySelectorAll('.trainer').forEach(c=>c.onclick=()=>{
+  const t=trainers.find(x=>x.id===c.dataset.id);
+  document.getElementById('mAvatar').textContent=t.emoji;
+  document.getElementById('mName').textContent=t.name;
+  document.getElementById('mSpec').textContent=t.specialty;
+  document.getElementById('mBio').textContent=t.bio;
+  document.getElementById('mList').innerHTML=t.list.map(x=>`<li>${x}</li>`).join('');
+  modal.classList.add('open');
+});
+document.getElementById('modalClose').onclick=()=>modal.classList.remove('open');
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open');};
+</script>
+</body>
+</html>
